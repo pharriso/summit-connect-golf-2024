@@ -8,3 +8,4 @@
       token: "{{ slack_token }}"
       channel: "{{ slack_channel }}"
       msg: "{{ slack_message }}"
+      attachments: "{{ slack_attachment | default(omit) }}"
