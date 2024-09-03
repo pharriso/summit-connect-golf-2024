@@ -1,0 +1,10 @@
+---
+
+- hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: send putt message to slack
+    community.general.slack:
+      token: "{{ slack_token }}"
+      channel: "{{ slack_channel }}"
+      msg: "{{ slack_message }}"

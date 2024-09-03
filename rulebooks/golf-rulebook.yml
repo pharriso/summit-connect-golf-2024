@@ -13,6 +13,8 @@
         run_job_template:
           name: "Golf Demo send to Slack"
           organization: Default
+          extra_vars:
+            slack_message: "New putt made in {{ event.stroke }} stroke! \n\n Event received at {{ event.meta.received_at }} by #eventdriven #ansible at #rhsummit"
 
     - name: Hole in one
       condition: event.data == "ST_MAGNET_STOP" and event.stroke == 1
@@ -20,3 +22,5 @@
         run_job_template:
           name: "Golf Demo send to Slack"
           organization: Default
+          extra_vars:
+            slack_message: "Talk about a hole in {{ event.stroke }}! \n\n Event received at {{ event.meta.received_at }} by #eventdriven #ansible at #rhsummit"
