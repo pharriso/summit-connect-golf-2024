@@ -8,6 +8,11 @@
       token: "{{ slack_token }}"
       channel: "{{ slack_channel }}"
       msg: "{{ slack_message }}"
+
+  - name: send the all important gif
+    community.general.slack:
+      token: "{{ slack_token }}"
+      channel: "{{ slack_channel }}"
       blocks:
       - type: image
         alt_text: test
