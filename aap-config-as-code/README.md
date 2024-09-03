@@ -6,9 +6,11 @@ EDA
 
 Setting environment variables for authentication. 
 
+```
 export EDA_HOST=
 export EDA_USERNAME=
 export EDA_PASSWORD=
+```
 
 Edit vars in vars/eda_vars as needed. Run the playbook.
 
@@ -21,9 +23,11 @@ Controller
 
 Setting environment variables for authentication. 
 
+```
 export CONTROLLER_HOST=
 export CONTROLLER_USERNAME=
 export CONTROLLER_PASSWORD=
+```
 
 Edit vars in vars/controller_vars as needed. Run the playbook.
 
