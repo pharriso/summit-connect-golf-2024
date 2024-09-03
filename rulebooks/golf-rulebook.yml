@@ -15,7 +15,8 @@
           organization: Default
           job_args:
             extra_vars:
-              slack_message: "*New putt made in {{ event.stroke }} strokes!* \n\n Event received at {{ event.meta.received_at }} by #eventdriven #ansible at London Summit Connect \n\n https://media.giphy.com/media/phajKPhwNxHr2/giphy.gif?cid=790b7611g4yubkeu032e9ppfw0hqpemosqqnevv16y3hkald&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+              slack_message: "*New putt made in {{ event.stroke }} strokes!* \n\n Event received at {{ event.meta.received_at }} by #eventdriven #ansible at London Summit Connect
+              slack_image_url: https://media.giphy.com/media/phajKPhwNxHr2/giphy.gif?cid=790b7611g4yubkeu032e9ppfw0hqpemosqqnevv16y3hkald&ep=v1_gifs_search&rid=giphy.gif
 
     - name: Hole in one
       condition: event.data == "ST_MAGNET_STOP" and event.stroke == 1
@@ -25,4 +26,5 @@
           organization: Default
           job_args:
             extra_vars:
-              slack_message: "*Talk about a hole in {{ event.stroke }}!* \n\n Event received at {{ event.meta.received_at }} by #eventdriven #ansible at London Summit Connect \n\n [](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzR5dWJrZXUwMzJlOXBwZncwaHFwZW1vc3FxbmV2djE2eTNoa2FsZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/O2kFK6fdz217a/giphy.gif)"
+              slack_message: "*Talk about a hole in {{ event.stroke }}!* \n\n Event received at {{ event.meta.received_at }} by #eventdriven #ansible at London Summit Connect
+              slack_image_url: https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzR5dWJrZXUwMzJlOXBwZncwaHFwZW1vc3FxbmV2djE2eTNoa2FsZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/O2kFK6fdz217a/giphy.gif

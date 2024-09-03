@@ -8,4 +8,7 @@
       token: "{{ slack_token }}"
       channel: "{{ slack_channel }}"
       msg: "{{ slack_message }}"
-      blocks: "{{ slack_blocks | default(omit) }}"
+      blocks:
+      - type: image
+        alt_text: test
+        image_url: "{{ slack_image_url }}"
