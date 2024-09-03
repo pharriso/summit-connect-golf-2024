@@ -1,0 +1,8 @@
+---
+controller_templates:
+- name: Golf Demo send to Slack
+  job_type: run
+  inventory: Demo Inventory
+  project: Golf Demo
+  playbook: playbooks/golf-demo-send-slack.yml
+  ask_variables_on_launch: true

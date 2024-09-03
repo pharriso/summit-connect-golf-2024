@@ -1,0 +1,4 @@
+---
+eda_decision_environments:
+  - name: Golf Demo Decision Environment
+    image_url: "quay.io/pharriso/golf-de:1.1"

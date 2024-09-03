@@ -1,0 +1,9 @@
+---
+eda_rulebook_activations:
+  - name: Golf Demo Rulebook
+    project: golf-demo
+    rulebook: golf-rulebook.yml
+    decision_environment: Golf Demo Decision Environment
+    enabled: false
+    state: present
+

@@ -1,0 +1,13 @@
+---
+- name: configure controller
+  hosts: localhost
+  collections:
+    - awx.awx
+    - infra.controller_configuration
+  pre_tasks:
+  - name: include eda vars
+    include_vars:
+      dir: vars/controller_vars
+  roles: 
+    - dispatch
+

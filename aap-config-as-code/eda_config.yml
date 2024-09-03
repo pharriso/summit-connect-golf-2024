@@ -1,0 +1,14 @@
+---
+
+- name: configure eda
+  hosts: localhost
+  vars:
+    eda_host: "{{ lookup('ansible.builtin.env', 'EDA_HOST') }}"
+  pre_tasks:
+  - name: include eda vars
+    include_vars:
+      dir: vars/eda_vars
+  roles:
+    - infra.eda_configuration.project
+    - infra.eda_configuration.decision_environment
+    - infra.eda_configuration.rulebook_activation
