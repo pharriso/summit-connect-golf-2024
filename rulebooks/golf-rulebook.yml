@@ -1,0 +1,22 @@
+- name: golfball events
+  hosts: localhost
+  sources:
+    - kubealex.eda.mqtt:
+        host: "{{ mqtt_host }}"
+        port: 1883
+        topic: 'ansible-golfs/golfball/#'
+
+  rules:
+    - name: Putt made
+      condition: event.data == "ST_MAGNET_STOP" and event.stroke > 1
+      action:
+        run_job_template:
+          name: "Golf Demo send to Slack"
+          organization: Default
+
+    - name: Hole in one
+      condition: event.data == "ST_MAGNET_STOP" and event.stroke == 1
+      action:
+        run_job_template:
+          name: "Golf Demo send to Slack"
+          organization: Default
