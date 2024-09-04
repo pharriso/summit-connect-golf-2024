@@ -1,0 +1,4 @@
+mosquitto_user: mosquitto
+mosquitto_uid: 1883
+mosquitto_port: 1883
+timezone: "Europe/London"

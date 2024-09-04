@@ -1,0 +1,135 @@
+---
+- name: Install packages for rpm hosts
+  ansible.builtin.dnf:
+    name:
+      - podman
+      - systemd-container
+      - acl
+    state: present
+  when: ansible_pkg_mgr == "dnf"
+
+- name: Install packages for ostree hosts (Assuming Podman is installed by default)
+  community.general.rpm_ostree_pkg:
+    name:
+      - systemd-container
+      - acl
+    state: present
+  when: ansible_pkg_mgr == "atomic_container"
+  notify: Reboot System
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable podman auto update timer
+  ansible.builtin.systemd:
+    name: podman-auto-update.timer
+    state: started
+    enabled: true
+
+# The AWS instance doesn't have a firewall...
+# - name: Open firewall for Mosquitto port
+#   ansible.posix.firewalld:
+#     port: "{{ mosquitto_port }}/tcp"
+#     permanent: true
+#     state: enabled
+#     immediate: true
+
+- name: Add mosquitto user
+  ansible.builtin.user:
+    name: "{{ mosquitto_user }}"
+    uid: "{{ mosquitto_uid }}"
+
+- name: Check linger
+  ansible.builtin.stat:
+    path: "/var/lib/systemd/linger/{{ mosquitto_user }}"
+  register: mosquitto_user_lingering
+
+- name: Enable linger
+  ansible.builtin.command:
+    cmd: loginctl enable-linger "{{ mosquitto_user }}"
+  when: not mosquitto_user_lingering.stat.exists
+  register: lctloutput
+  changed_when: lctloutput.rc == 0
+  failed_when: lctloutput.rc !=0
+
+- name: Create Mosquitto Directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    recurse: true
+    mode: '0755'
+    owner: "{{ mosquitto_user }}"
+    group: "{{ mosquitto_user }}"
+  with_items:
+    - "/home/{{ mosquitto_user }}/mosquitto/data"
+    - "/home/{{ mosquitto_user }}/mosquitto/log"
+
+- name: Add Local Config if local server
+  ansible.builtin.template:
+    src: templates/mosquitto.conf.local.j2
+    dest: /home/{{ mosquitto_user }}/mosquitto/mosquitto.conf
+    mode: '0755'
+    owner: "{{ mosquitto_user }}"
+    group: "{{ mosquitto_user }}"
+  when: mosquitto_type == "local"
+
+- name: Add remote Config if remote server
+  ansible.builtin.template:
+    src: templates/mosquitto.conf.remote.j2
+    dest: /home/{{ mosquitto_user }}/mosquitto/mosquitto.conf
+    mode: '0755'
+    owner: "{{ mosquitto_user }}"
+    group: "{{ mosquitto_user }}"
+  when: mosquitto_type == "remote"
+
+- name: Create Podman quadlet
+  containers.podman.podman_container:
+    name: mosquitto
+    state: quadlet
+    image: docker.io/library/eclipse-mosquitto:latest
+    quadlet_filename: mosquitto
+    timezone: "{{ timezone }}"
+    user: "{{ mosquitto_uid }}"
+    groups:
+      - "{{ mosquitto_uid }}"
+    userns: keep-id
+    ports:
+      - "{{ mosquitto_port }}:1883"
+    volumes:
+      - "/home/{{ mosquitto_user }}/mosquitto/conf/mosquitto.conf:/mosquitto/config/mosquitto.conf:Z "
+      - "/home/{{ mosquitto_user }}/mosquitto/data:/mosquitto/data:Z"
+      - "/home/{{ mosquitto_user }}/mosquitto/data:/mosquitto/log/:Z"
+    quadlet_options:
+      - "AutoUpdate=registry"
+      - |
+        [Install]
+        WantedBy=default.target
+
+        [Unit]
+        After=network.target
+  become_user: "{{ mosquitto_user }}"
+  become: true
+  become_method: community.general.machinectl
+
+- name: Reload systemd
+  ansible.builtin.systemd:
+    daemon-reload: true
+    scope: user
+  become_user: "{{ mosquitto_user }}"
+  become: true
+  become_method: community.general.machinectl
+
+- name: Start services
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: "{{ item }}"
+    state: started
+    enabled: true
+    no_block: true
+    scope: user
+  with_items:
+    - mosquitto
+    - podman-auto-update
+  become_user: "{{ mosquitto_user }}"
+  become: true
+  become_method: community.general.machinectl

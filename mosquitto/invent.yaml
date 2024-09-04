@@ -1,0 +1,11 @@
+---
+all:
+  children:
+    remote:
+      hosts:
+        aap-eda.sandbox3245.opentlc.com:
+          ansible_user: aap
+    # local:
+    #   hosts:
+    #     something.example.com:
+    #       ansible_user: aap

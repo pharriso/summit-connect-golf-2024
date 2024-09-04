@@ -1,0 +1,7 @@
+---
+- hosts: local
+  name: Install Local config Mosquitto
+  vars:
+    mosquitto_type: local
+  roles:
+    - mosquitto

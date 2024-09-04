@@ -1,0 +1,7 @@
+---
+- hosts: remote
+  name: Install remote config Mosquitto
+  vars:
+    mosquitto_type: remote
+  roles:
+    - mosquitto
