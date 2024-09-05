@@ -2,6 +2,15 @@
 
 - hosts: localhost
   gather_facts: false
+  vars:
+    hole_in_one:
+      - "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzR5dWJrZXUwMzJlOXBwZncwaHFwZW1vc3FxbmV2djE2eTNoa2FsZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/O2kFK6fdz217a/giphy.gif"
+      - "https://media.giphy.com/media/5xtDarC5EWBFTINCP6w/giphy.gif?cid=ecf05e4741wnt6lif0qtdnr5vgqalk2fbmzimfvzucjyimjc&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+      - "https://media.giphy.com/media/cqPKypQge4oqk/giphy.gif?cid=790b761154ymcvb0529nqmb32zaszq58kkgh1zmiyj1jasgb&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+    hole_in_more:
+      - "https://media.giphy.com/media/yCdmeyPCU2b1C/giphy.gif?cid=790b761154ymcvb0529nqmb32zaszq58kkgh1zmiyj1jasgb&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+      - "https://media.giphy.com/media/tBbsoRtpiFdhS/giphy.gif?cid=790b761154ymcvb0529nqmb32zaszq58kkgh1zmiyj1jasgb&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+      - "https://media.giphy.com/media/590KMjR4lHKRW/giphy.gif?cid=ecf05e47xjxivlzoq42ugqe08ewn178syaohsmijfhto5f1g&ep=v1_gifs_search&rid=giphy.gif&ct=g"
   tasks:
   - name: send putt message to slack
     community.general.slack:
@@ -16,4 +25,4 @@
       blocks:
       - type: image
         alt_text: test
-        image_url: "{{ slack_image_url }}"
+        image_url: "{{ lookup('vars', gif_list) | random }}"
