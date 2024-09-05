@@ -1,4 +1,4 @@
-mosquitto_user: mosquitto
-mosquitto_uid: 1883
+mosquitto_user: aap # This needs to be the user you are sshing in or you will end up in machinectl and become hell
+mosquitto_uid: 1001
 mosquitto_port: 1883
 timezone: "Europe/London"

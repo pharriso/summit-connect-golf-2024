@@ -63,11 +63,12 @@
   with_items:
     - "/home/{{ mosquitto_user }}/mosquitto/data"
     - "/home/{{ mosquitto_user }}/mosquitto/log"
+    - "/home/{{ mosquitto_user }}/mosquitto/conf/"
 
 - name: Add Local Config if local server
   ansible.builtin.template:
     src: templates/mosquitto.conf.local.j2
-    dest: /home/{{ mosquitto_user }}/mosquitto/mosquitto.conf
+    dest: /home/{{ mosquitto_user }}/mosquitto/conf/mosquitto.conf
     mode: '0755'
     owner: "{{ mosquitto_user }}"
     group: "{{ mosquitto_user }}"
@@ -76,7 +77,7 @@
 - name: Add remote Config if remote server
   ansible.builtin.template:
     src: templates/mosquitto.conf.remote.j2
-    dest: /home/{{ mosquitto_user }}/mosquitto/mosquitto.conf
+    dest: /home/{{ mosquitto_user }}/mosquitto/conf/mosquitto.conf
     mode: '0755'
     owner: "{{ mosquitto_user }}"
     group: "{{ mosquitto_user }}"
@@ -98,7 +99,7 @@
     volumes:
       - "/home/{{ mosquitto_user }}/mosquitto/conf/mosquitto.conf:/mosquitto/config/mosquitto.conf:Z "
       - "/home/{{ mosquitto_user }}/mosquitto/data:/mosquitto/data:Z"
-      - "/home/{{ mosquitto_user }}/mosquitto/data:/mosquitto/log/:Z"
+      - "/home/{{ mosquitto_user }}/mosquitto/log:/mosquitto/log/:Z"
     quadlet_options:
       - "AutoUpdate=registry"
       - |
@@ -108,16 +109,12 @@
         [Unit]
         After=network.target
   become_user: "{{ mosquitto_user }}"
-  become: true
-  become_method: community.general.machinectl
 
 - name: Reload systemd
   ansible.builtin.systemd:
     daemon-reload: true
     scope: user
   become_user: "{{ mosquitto_user }}"
-  become: true
-  become_method: community.general.machinectl
 
 - name: Start services
   ansible.builtin.systemd:
@@ -131,5 +128,3 @@
     - mosquitto
     - podman-auto-update
   become_user: "{{ mosquitto_user }}"
-  become: true
-  become_method: community.general.machinectl
