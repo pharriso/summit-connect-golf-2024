@@ -11,7 +11,7 @@
       condition: event.data == "ST_MAGNET_STOP" and event.stroke > 1
       action:
         run_workflow_template:
-          name: "Golf Demo send to Slack"
+          name: "Golf Demo Workflow"
           organization: Default
           job_args:
             extra_vars:
@@ -22,7 +22,7 @@
       condition: event.data == "ST_MAGNET_STOP" and event.stroke == 1
       action:
         run_workflow_template:
-          name: "Golf Demo send to Slack"
+          name: "Golf Demo Workflow"
           organization: Default
           job_args:
             extra_vars:
