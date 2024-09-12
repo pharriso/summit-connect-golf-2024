@@ -1,0 +1,17 @@
+---
+
+- name: control govee light
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: switch govee light {{ light_state }}
+    ansible.builtin.uri:
+      url: https://developer-api.govee.com/v1/devices/control
+      method: put
+      body: "{{ lookup('ansible.builtin.template','govee_body.json.j2') | to_json  }}"
+      headers:
+        Govee-API-Key: "{{ govee_apikey }}"
+        accept: application/json
+        content-type: application/json
+    changed_when: true
+    no_log: true
