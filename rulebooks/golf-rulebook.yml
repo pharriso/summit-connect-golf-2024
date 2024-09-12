@@ -10,7 +10,7 @@
     - name: Putt made
       condition: event.data == "ST_MAGNET_STOP" and event.stroke > 1
       action:
-        run_job_template:
+        run_workflow_template:
           name: "Golf Demo send to Slack"
           organization: Default
           job_args:
@@ -21,7 +21,7 @@
     - name: Hole in one
       condition: event.data == "ST_MAGNET_STOP" and event.stroke == 1
       action:
-        run_job_template:
+        run_workflow_template:
           name: "Golf Demo send to Slack"
           organization: Default
           job_args:
