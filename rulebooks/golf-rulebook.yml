@@ -5,6 +5,8 @@
         host: "{{ mqtt_host }}"
         port: 1883
         topic: 'ansible-golfs/golfball/#'
+        username: "{{ mqtt_username }}"
+        password: "{{ mqtt_password }}"
 
   rules:
     - name: Putt made
