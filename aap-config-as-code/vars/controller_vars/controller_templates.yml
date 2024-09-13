@@ -6,8 +6,22 @@ controller_templates:
   project: Golf Demo
   playbook: playbooks/golf-demo-send-slack.yml
   ask_variables_on_launch: true
+  credentials:
+  - Slack
 - name: Golf Demo control lights
   job_type: run
   inventory: Demo Inventory
   project: Golf Demo
   playbook: playbooks/golf-control-govee.yml
+  ask_variables_on_launch: true
+  credentials:
+  - Govee Lights
+- name: Switch lights off
+  job_type: run
+  inventory: Demo Inventory
+  project: Golf Demo
+  playbook: playbooks/golf-control-govee.yml
+  extra_vars:
+    light_state: 'off'
+  credentials:
+  - Govee Lights
