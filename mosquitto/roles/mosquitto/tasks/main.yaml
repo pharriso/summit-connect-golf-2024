@@ -83,6 +83,16 @@
     group: "{{ mosquitto_user }}"
   when: mosquitto_type == "remote"
 
+- name: copy password file across
+  ansible.builtin.copy:
+    src: mosquitto_passwd
+    dest: /home/{{ mosquitto_user }}/mosquitto/conf/mosquitto_passwd
+    mode: '0644'
+    owner: "{{ mosquitto_user }}"
+    group: "{{ mosquitto_user }}"
+  when: 
+  - mosquitto_type == "remote"
+
 - name: Create Podman quadlet
   containers.podman.podman_container:
     name: mosquitto
@@ -98,6 +108,7 @@
       - "{{ mosquitto_port }}:1883"
     volumes:
       - "/home/{{ mosquitto_user }}/mosquitto/conf/mosquitto.conf:/mosquitto/config/mosquitto.conf:Z "
+      - "/home/aap/mosquitto/conf/mosquitto_passwd:/mosquitto/config/mosquitto_passwd:Z"
       - "/home/{{ mosquitto_user }}/mosquitto/data:/mosquitto/data:Z"
       - "/home/{{ mosquitto_user }}/mosquitto/log:/mosquitto/log/:Z"
     quadlet_options:

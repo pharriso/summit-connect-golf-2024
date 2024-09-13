@@ -1,6 +1,18 @@
 
 # Mosquitto as a container
 
+## Pre-Req
+
+Default auth will be admin / redhat123. You should change this as follows:
+
+You will need to generate a password for authentication. You can run this inside the container image:
+
+```
+mosquitto_passwd -c /tmp/mosquitto_passwd <username>
+```
+
+Take the result of this and replace the contents of - roles/mosquitto/files/mosquitto_passwd 
+
 ## Installing
 
 ``ansible-playbook --private-key ~/.ssh/aap -i invent.yaml -b remote.yaml``
