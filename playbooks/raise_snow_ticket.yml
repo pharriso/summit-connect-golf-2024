@@ -1,0 +1,24 @@
+---
+
+- name: create incident in servicenow
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: create incident
+    servicenow.itsm.incident:
+      state: new
+      short_description: "Putt made in {{ ansible_eda.event.stroke }}"
+      description: "Summit Connect London - Ansible EDA - putt made in {{ ansible_eda.event.stroke }} recorded at {{ ansible_eda.event.meta.recieved_at }}"
+      impact: low
+      urgency: low
+    register: incident_number
+    retries: 5
+    delay: 10
+    until: incident_number is not failed
+
+  - name: display incident number
+    debug:
+       msg: "Incident raised with number - {{ incident_number.record.number }}"
+
+
+New putt made in {{ event.stroke }} strokes!* \n\n Event received at {{ event.meta.received_at }}
