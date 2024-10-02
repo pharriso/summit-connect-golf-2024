@@ -19,6 +19,3 @@
   - name: display incident number
     debug:
        msg: "Incident raised with number - {{ incident_number.record.number }}"
-
-
-New putt made in {{ event.stroke }} strokes!* \n\n Event received at {{ event.meta.received_at }}
