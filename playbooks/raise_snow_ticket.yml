@@ -8,7 +8,7 @@
     servicenow.itsm.incident:
       state: new
       short_description: "Putt made in {{ ansible_eda.event.stroke }}"
-      description: "Summit Connect London - Ansible EDA - putt made in {{ ansible_eda.event.stroke }} recorded at {{ ansible_eda.event.meta.recieved_at }}"
+      description: "Summit Connect London - Ansible EDA - putt made in {{ ansible_eda.event.stroke }} recorded at {{ ansible_eda.event.meta.received_at }}"
       impact: low
       urgency: low
     register: incident_number
