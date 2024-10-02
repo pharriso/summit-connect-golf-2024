@@ -30,3 +30,10 @@
             extra_vars:
               slack_message: "*Talk about a hole in {{ event.stroke }}!* \n\n Event received at {{ event.meta.received_at }} by #eventdriven #ansible at London Summit Connect"
               gif_list: hole_in_one
+
+    - name: Reset game
+      condition: event.data == "ST_READY" and event.stroke == 0
+      action:
+        run_job_template:
+          name: "Switch lights off"
+          organization: Default
